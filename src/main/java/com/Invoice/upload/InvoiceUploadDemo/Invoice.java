@@ -5,7 +5,13 @@ import java.io.Serializable;
 public class Invoice implements Serializable {
 	private String invoiceNumber;
 	  private String agent;
-  public String getInvoiceNumber() {
+	  
+  public Invoice(String invoiceNumber, String agent) {
+		super();
+		this.invoiceNumber = invoiceNumber;
+		this.agent = agent;
+	}
+public String getInvoiceNumber() {
 		return invoiceNumber;
 	}
 	public void setInvoiceNumber(String invoiceNumber) {

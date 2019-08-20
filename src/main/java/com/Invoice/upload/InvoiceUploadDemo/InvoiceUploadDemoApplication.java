@@ -15,6 +15,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,14 +29,14 @@ public class InvoiceUploadDemoApplication {
 		SpringApplication.run(InvoiceUploadDemoApplication.class, args);
 	}
 
-	@RequestMapping(value = "/create/invoice", method = RequestMethod.POST)
-	public ResponseEntity<String> createInvoice(@RequestBody Invoice invoice) throws IOException {
+	// @RequestMapping(value = "/create/invoice", method = RequestMethod.POST)
+	public static ResponseEntity<String> createInvoice(Invoice invoice) throws IOException {
 		System.out.println("Entered: " + invoice.toString());
 		BufferedWriter out = null;
 		String fileSeparator = System.getProperty("file.separator");
 
 		// absolute file name with path
-		String absoluteFilePath = "F:" + fileSeparator + "MyInvoiceFile"+System.currentTimeMillis()+".xml";
+		String absoluteFilePath = "F:" + fileSeparator + "MyInvoiceFile" + System.currentTimeMillis() + ".xml";
 		File file = null;
 
 		try {
@@ -64,6 +65,12 @@ public class InvoiceUploadDemoApplication {
 
 		// return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@RequestMapping(value = "/get/invoice/{invoicenumber}/{agent}", method = RequestMethod.GET)
+	public ResponseEntity<String> getInvoice(@PathVariable String invoicenumber, @PathVariable String agent)
+			throws IOException {
+		return createInvoice(new Invoice(invoicenumber, agent));
 	}
 
 }
